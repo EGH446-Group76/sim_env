@@ -1,6 +1,8 @@
 %% EXAMPLE: Four-wheel steering discrete simulation
 % Copyright 2018 The MathWorks, Inc.
 
+clear; close all; clc;
+
 %% Define vehicle
 wheelRadius = 0.1;          % Wheel radius [m]
 wheelDists = [0.3, 0.25];   % Front and rear wheel distances to CG [m]

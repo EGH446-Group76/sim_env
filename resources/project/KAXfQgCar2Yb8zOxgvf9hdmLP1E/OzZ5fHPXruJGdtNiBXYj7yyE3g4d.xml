@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<Info File="toolboxes/ground_robot/sl_groundvehicleDynamics.slx" GroupUUID="default" Icon="" Name="sl_groundvehicleDynamics" Type="StartUp" Visible="0">
-    <Extension Name="StartUpPrev" Value="HEAD"/>
-</Info>
