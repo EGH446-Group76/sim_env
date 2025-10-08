@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:d="http://www.mathworks.com/blockgraphics" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="svg" width="400" height="214" d:options="PreserveAspect:On;ScalingOnResizeMax:2.0;Rotate:Off;Resize:FitToBlock;">
+	<defs>
+		<style>
+			.font-size-default {
+				font-size: 21px; stroke-width: 0.53px;
+			}
+			.font-size-s {
+				font-size: 30px; stroke-width: 0.75px;
+			}
+					</style>
+	</defs>
+	<g id="part" title="part_0" ie-ports="left:simulink*simulink*simulink*simulink*simulink*simulink*simulink,top:,right:simulink,bottom:">
+		<text id="text" class="text font-size-s" x="55.75" y="58.4">
+			<tspan dx="0" dy="27" x="55.75" style="white-space: pre;">Measurement Update</tspan>
+		</text>
+		<text id="text_1" class="text font-size-default" x="144.57" y="91.5">
+			<tspan dx="0" dy="19" x="144.57">(Correction)</tspan>
+		</text>
+		<math id="equation" class="equation" height="35.19" width="256.36" x="71.82" y="136.01" style="font-size:21px; scalingFactors:1">
+			$$X  =  X^-  +  M*( Y - C*X^- )
+			$$		</math>
+	</g>
+</svg>

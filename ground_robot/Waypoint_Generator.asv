@@ -1,0 +1,114 @@
+close all; clear; clc;
+
+%% Parameters setup:
+
+N_WPs           = 10;
+WP_Pos_Bounds   = 500;
+
+WP_Thresh       = 5;
+
+
+
+
+%% Generating WPs:
+
+rng;
+Waypoints = randi([-WP_Pos_Bounds WP_Pos_Bounds], 2, N_WPs)
+
+
+%% Generating Robot Initial Pos:
+
+% State = randi([-WP_Pos_Bounds WP_Pos_Bounds], 2, 1)
+State = Waypoints(:, 3) + [-3, +2]
+
+
+%% Parsing and Initialisation of Waypoints:
+
+WP_List(N_WPs) = struct("Pos", [], "Visited", []);
+
+Closest_WP.Idx  = 0;
+Closest_WP.Dist = inf;
+
+
+for k = 1:N_WPs
+
+    % Turning the List of WPs into a Struct Array (so each WP can have its own boolean "Visited" flag):
+    WP_List(k).Pos = Waypoints(:, k);
+    WP_List(k).Visited = false;
+
+    % Finding the Closest WP to the Robot's Current Position:
+    Dist_2_WP = sqrt( (WP_List(k).Pos(1)-State(1))^2 + (WP_List(k).Pos(2)-State(2))^2 );
+    if Dist_2_WP < Closest_WP.Dist
+        Closest_WP.Idx  = k;
+        Closest_WP.Dist = Dist_2_WP;
+    end
+
+end
+
+
+if Closest_WP.Idx ~= 0,     Target_WP_Idx = Closest_WP.Idx
+else,                       error('"Path-Planning" did not find an applicable Target WP upon Initialisation.');
+end
+
+Pre = figure();
+hold on;
+plot(Waypoints(1, :), Waypoints(2, :), "o", "Color", "g")
+title("Pre")
+plot(State(1), State(2), "x", "Color", "r")
+plot(Waypoints(1, Target_WP_Idx), Waypoints(2, Target_WP_Idx), "x", "Color", "g")
+plot(State(1), State(2), "x", "Color", "r")
+grid;
+hold off;
+
+
+
+%% Changing Target WP:
+
+if sqrt( (WP_List(Target_WP_Idx).Pos(1)-State(1))^2 + (WP_List(Target_WP_Idx).Pos(2)-State(2))^2 ) < WP_Thresh
+
+    WP_List(Target_WP_Idx).Visited = true;
+
+
+    Closest_WP.Idx  = 0;
+    Closest_WP.Dist = inf;
+    
+    for k = 1:10
+    
+        if WP_List(k).Visited == false
+    
+            Dist_2_WP = sqrt( (WP_List(k).Pos(1)-State(1))^2 + (WP_List(k).Pos(2)-State(2))^2 );
+            if Dist_2_WP < Closest_WP.Dist
+                Closest_WP.Idx  = k;
+                Closest_WP.Dist = Dist_2_WP;
+            end
+            
+        end
+    end
+    
+
+    if Closest_WP.Idx ~= 0,     Target_WP_Idx = Closest_WP.Idx;
+    else,                       disp("All WPs have been Visited.");
+    end
+
+end
+
+
+
+plot(Waypoints(1, :), Waypoints(2, :), "o", "Color", "g")
+hold on;
+title("Post")
+plot(State(1), State(2), "x", "Color", "r")
+plot(Waypoints(1, Target_WP_Idx), Waypoints(2, Target_WP_Idx), "x", "Color", "g")
+plot(State(1), State(2), "x", "Color", "r")
+grid;
+hold off;
+
+
+
+
+%%
+
+
+
+
+disp(WP_List)
