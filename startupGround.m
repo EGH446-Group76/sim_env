@@ -34,7 +34,12 @@ load('complexMap_air_ground.mat');
 
 load('obstacles_air_ground.mat');
 
+% reversing the oder of the rows (Y-pos)
+logical_map = flipud(logical_map);
+
 
 %% creating [Ordered_Waypoints]
 
-run("Waypoint_Generator.m")
+Ordered_Waypoints = GenerateWaypoints(logical_map)
+
+% Ordered_Waypoints = [10, 10; 15, 15]
