@@ -24,8 +24,8 @@ Waypoints = zeros(N_WPs, 2);
 for i = 1:N_WPs
 
 	while true
-		WP_x = randi(X_lim, 1);
-		WP_y = randi(Y_lim, 1);
+		WP_x = round(X_lim(1) + (X_lim(2)-X_lim(1))*rand(), 1);
+		WP_y = round(Y_lim(1) + (Y_lim(2)-Y_lim(1))*rand(), 1);
 		if (~LogicalMap( (WP_y*10), (WP_x*10) ))
 			break
 		end
