@@ -1,16 +1,23 @@
-close all; clear; clc;
+clc
 
 %% Parameters setup:
 
 N_WPs           = 10;
-WP_Pos_Bounds   = 500;
+
+XWorldLimits = [0 52];
+YWorldLimits = [0 41];
 
 
 
 %% Generating WPs:
 
 rng;
-Waypoints = randi([-WP_Pos_Bounds WP_Pos_Bounds], N_WPs, 2)
+
+WP_X = randi(XWorldLimits, N_WPs, 1);
+WP_Y = randi(YWorldLimits, N_WPs, 1);
+
+Waypoints = [WP_X(:) WP_Y(:)]
+
 
 
 
@@ -62,3 +69,5 @@ end
 WP_List = WP_List(Optimised_WP_Indices);
 
 Ordered_Waypoints = cell2mat({WP_List.Pos}')
+
+
