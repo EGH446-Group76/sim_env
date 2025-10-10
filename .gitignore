@@ -38,3 +38,14 @@ codegen/
 # SimBiology backup files
 *.sbproj.backup
 *.sbproj.bak
+
+
+
+# =========================	Aaron's Additions:
+
+# Ignore Python Venv Folder:
+venv/
+
+# Ignore Python Cache Folder and Files:
+__pycache__/
+*.pyc

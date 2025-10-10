@@ -1,16 +1,16 @@
-%% clear Workspace
+%% Clear Workspace:
 
 clear all
 clc
 disp("Starting Up Ground Environment...")
 
 
-%% close previously open model
+%% Close Previously Open Model:
 
 close_system('sl_groundvehicleDynamics',0);
  
 
-%% add toolboxes to path
+%% Add Toolboxes to Path:
 
 homedir = pwd; 
 addpath( genpath(strcat(homedir,[filesep,'toolboxes'])));
@@ -21,14 +21,32 @@ startMobileRoboticsSimulationToolbox;
 cd(homedir);
 
 
-%% open current model
+%% Setup Python Venv and Path:
 
-open_system('sl_groundvehicleDynamics'); %differential robot
+% Ensure Python Environment is Properly Setup:
+[status, ~] = system(sprintf('powershell -NoLogo -NoProfile -ExecutionPolicy Bypass -File "%s"', fullfile(homedir, 'SetupVenv.ps1')), '-echo');
+if status ~= 0, error("Failed to run 'SetupEnv.ps1' (status %d):\n%s", status, out); end
 
+
+% Configure MATLAB to use the Project's Python Venv:
+disp(pyenv('Version', fullfile(homedir, 'venv', 'Scripts', 'python.exe')))
+disp('')
+
+% Ensure Python Module Path is Included:
+if count(py.sys.path, fullfile(pwd, 'Python')) == 0, insert(py.sys.path, int32(0), fullfile(homedir, 'Python')); end
+
+
+%% Open Current Model:
+
+cd('toolboxes/ground_robot');
+open_system('sl_groundvehicleDynamics.slx');
 cd(homedir);
 
+close all;
 
-%% load in Part B [map] and [obstacles]
+
+
+%% Load in Part B [map] and [obstacles]
 
 load('complexMap_air_ground.mat');
 
@@ -38,8 +56,17 @@ load('obstacles_air_ground.mat');
 logical_map = flipud(logical_map);
 
 
-%% creating [Ordered_Waypoints]
+%% Instansiate Problem Object:
 
-Ordered_Waypoints = GenerateWaypoints(logical_map)
+disp("Initialising the Offline Path-Planner...")
+OPP = py.OfflinePathPlanner.OfflinePathPlanner(logical_map, 4);
+disp("Finished Initialising Offline Path-Planner.")
+disp(""); disp("");
+
+
+%% Initialise Goal Waypoints:
+
+
+Waypoints = double(OPP.Waypoints)
 
 % Ordered_Waypoints = [10, 10; 15, 15]

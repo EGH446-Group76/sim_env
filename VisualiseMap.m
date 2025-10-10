@@ -1,18 +1,23 @@
-function VisualiseMap(LogicalMap, WayPoints)
+function VisualiseMap(LogicalMap, WallPadding, WayPoints)
 
 arguments
-	LogicalMap 
-	WayPoints = []
+	LogicalMap
+	WallPadding	= []
+	WayPoints	= []
 end
-
-
-M = LogicalMap;
 
 CellWidth = 10;
 
+
+M = min((double(LogicalMap)+0.25), 1);
+
+if (~isempty(WallPadding)), M = min((M + double(WallPadding)*0.25), 1); end
+
+M = cat(3, M, M, M);
+
+
 figure;
-imagesc(M);
-colormap([0.25 0.25 0.25; 1 1 1]);
+image(M)
 axis image;
 set(gca,'YDir','normal');	% Flips Y-axis (vertical flip).
 hold on;
@@ -27,10 +32,6 @@ set(gca, 'GridColor', 'k', 'GridAlpha', 1, 'LineWidth', 0.5);
 ax = gca;
 ax.XTickLabel = (0:1:(520/CellWidth));
 ax.YTickLabel = (0:1:(420/CellWidth));
-
-if ~isempty(WayPoints)
-	% *Code to plot WayPoints*
-end
 
 if ~isempty(WayPoints)
 	scatter( ...
